@@ -75,6 +75,7 @@ private void actualizarTablaGrafica() {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaProductos = new javax.swing.JTable();
         btnEliminar = new javax.swing.JButton();
+        btnImportarCSV = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,6 +122,9 @@ private void actualizarTablaGrafica() {
         btnEliminar.setText("Eliminar Artículo");
         btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
+        btnImportarCSV.setText("Importar Lote CSV");
+        btnImportarCSV.addActionListener(this::btnImportarCSVActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -153,9 +157,11 @@ private void actualizarTablaGrafica() {
                             .addComponent(jLabel3)
                             .addGap(18, 18, 18)
                             .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnImportarCSV)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAgregar)
@@ -178,7 +184,8 @@ private void actualizarTablaGrafica() {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnAgregar)
                         .addComponent(btnGenerarPDF)
-                        .addComponent(btnEliminar)))
+                        .addComponent(btnEliminar)
+                        .addComponent(btnImportarCSV)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -398,6 +405,74 @@ try {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void btnImportarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarCSVActionPerformed
+        
+        javax.swing.JFileChooser selector = new javax.swing.JFileChooser();
+        selector.setDialogTitle("Seleccionar catálogo CSV de importación");
+        
+        
+        javax.swing.filechooser.FileNameExtensionFilter filtro = new javax.swing.filechooser.FileNameExtensionFilter("Archivos CSV (*.csv)", "csv");
+        selector.setFileFilter(filtro);
+
+        int resultado = selector.showOpenDialog(this);
+        if (resultado == javax.swing.JFileChooser.APPROVE_OPTION) {
+            java.io.File archivoElegido = selector.getSelectedFile();
+            
+            try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(archivoElegido))) {
+                String linea;
+                int importados = 0;
+                
+                while ((linea = br.readLine()) != null) {
+                    
+                    if (linea.trim().isEmpty()) continue;
+                    
+                    String[] datos = linea.split(",");
+                    
+                    if (datos.length == 6) {
+                        String id = datos[0].trim();
+                        String nombre = datos[1].trim();
+                        double precio = Double.parseDouble(datos[2].trim());
+                        int stock = Integer.parseInt(datos[3].trim());
+                        String categoria = datos[4].trim();
+                        java.time.LocalDate fecha = java.time.LocalDate.parse(datos[5].trim());
+
+                        
+                        boolean repetido = false;
+                        for (Articulo art : listaArticulos) {
+                            if (art.getId().equalsIgnoreCase(id)) {
+                                repetido = true;
+                                break;
+                            }
+                        }
+
+                        if (!repetido) {
+                            Articulo nuevo = new Articulo(id, nombre, precio, stock, categoria, fecha);
+                            listaArticulos.add(nuevo);
+                            importados++;
+                        }
+                    }
+                }
+
+                
+                if (importados > 0) {
+                    ManejadorArchivo.guardarArticulos(listaArticulos);
+                    actualizarTablaGrafica();
+                    javax.swing.JOptionPane.showMessageDialog(this, 
+                        "¡Importación exitosa! Se añadieron " + importados + " artículos nuevos.", 
+                        "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, 
+                        "No se importaron registros nuevos (campos incorrectos o IDs duplicados).", 
+                        "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+                }
+
+            } catch (Exception e) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error al leer el CSV: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnImportarCSVActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -427,6 +502,7 @@ try {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGenerarPDF;
+    private javax.swing.JButton btnImportarCSV;
     private javax.swing.JComboBox<String> cboCategoria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
