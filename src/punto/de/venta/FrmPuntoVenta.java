@@ -74,6 +74,7 @@ private void actualizarTablaGrafica() {
         btnGenerarPDF = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaProductos = new javax.swing.JTable();
+        btnEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,6 +100,7 @@ private void actualizarTablaGrafica() {
         jLabel6.setText("Departamento");
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
 
         btnGenerarPDF.setText("Generar PDF");
         btnGenerarPDF.addActionListener(this::btnGenerarPDFActionPerformed);
@@ -116,6 +118,9 @@ private void actualizarTablaGrafica() {
         ));
         jScrollPane1.setViewportView(tablaProductos);
 
+        btnEliminar.setText("Eliminar Artículo");
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -123,35 +128,36 @@ private void actualizarTablaGrafica() {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txtStock))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtId))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtPrecio))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtNombre)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel5)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(5, 5, 5)
-                        .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                        .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtFecha))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtStock))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGenerarPDF)
@@ -171,7 +177,8 @@ private void actualizarTablaGrafica() {
                             .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnAgregar)
-                        .addComponent(btnGenerarPDF)))
+                        .addComponent(btnGenerarPDF)
+                        .addComponent(btnEliminar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -214,8 +221,182 @@ private void actualizarTablaGrafica() {
     }//GEN-LAST:event_cboCategoriaActionPerformed
 
     private void btnGenerarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarPDFActionPerformed
-        // TODO add your handling code here:
+        try {
+            if (listaArticulos.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "No hay datos para el reporte.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            String ruta = "Reporte_Inventario.pdf";
+            com.itextpdf.text.Document documento = new com.itextpdf.text.Document();
+            com.itextpdf.text.pdf.PdfWriter.getInstance(documento, new java.io.FileOutputStream(ruta));
+            documento.open();
+try {
+                com.itextpdf.text.Image imagenLogo = com.itextpdf.text.Image.getInstance("logo.jpg");
+                imagenLogo.scaleToFit(70, 70); 
+                imagenLogo.setAlignment(com.itextpdf.text.Image.ALIGN_LEFT); 
+                documento.add(imagenLogo);
+            } catch (Exception imgEx) {
+                System.out.println("No se pudo cargar el logo: " + imgEx.getMessage());
+            }
+            
+            com.itextpdf.text.BaseColor azulElegante = new com.itextpdf.text.BaseColor(26, 82, 118); 
+            
+            com.itextpdf.text.BaseColor grisClaro = new com.itextpdf.text.BaseColor(242, 244, 244); 
+            
+            
+            com.itextpdf.text.Font fuenteTitulo = com.itextpdf.text.FontFactory.getFont(com.itextpdf.text.FontFactory.HELVETICA_BOLD, 20, azulElegante);
+            com.itextpdf.text.Font fuenteSubtitulo = com.itextpdf.text.FontFactory.getFont(com.itextpdf.text.FontFactory.HELVETICA, 10, com.itextpdf.text.BaseColor.GRAY);
+            com.itextpdf.text.Font fuenteHeaders = com.itextpdf.text.FontFactory.getFont(com.itextpdf.text.FontFactory.HELVETICA_BOLD, 11, com.itextpdf.text.BaseColor.WHITE);
+            com.itextpdf.text.Font fuenteDatos = com.itextpdf.text.FontFactory.getFont(com.itextpdf.text.FontFactory.HELVETICA, 10, com.itextpdf.text.BaseColor.BLACK);
+
+            
+            com.itextpdf.text.Paragraph titulo = new com.itextpdf.text.Paragraph("REPORTE DE INVENTARIO", fuenteTitulo);
+            titulo.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+            documento.add(titulo);
+            
+            com.itextpdf.text.Paragraph subtitulo = new com.itextpdf.text.Paragraph("Punto de Venta - Generado el: " + java.time.LocalDate.now() + "\n\n", fuenteSubtitulo);
+            subtitulo.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+            documento.add(subtitulo);
+
+            
+            com.itextpdf.text.pdf.PdfPTable tablaPdf = new com.itextpdf.text.pdf.PdfPTable(6);
+            tablaPdf.setWidthPercentage(100); 
+            tablaPdf.setSpacingBefore(10f);
+
+            
+            String[] encabezados = {"ID", "Nombre", "Precio", "Stock", "Categoría", "Fecha"};
+            for (String enc : encabezados) {
+                com.itextpdf.text.pdf.PdfPCell celdaHeader = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Paragraph(enc, fuenteHeaders));
+                celdaHeader.setBackgroundColor(azulElegante);
+                celdaHeader.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+                celdaHeader.setPadding(6);
+                tablaPdf.addCell(celdaHeader);
+            }
+
+            
+            int filaContador = 0;
+            for (Articulo art : listaArticulos) {
+                com.itextpdf.text.BaseColor colorFila = (filaContador % 2 == 0) ? com.itextpdf.text.BaseColor.WHITE : grisClaro;
+
+                String[] campos = {
+                    art.getId(),
+                    art.getNombre(),
+                    "$" + art.getPrecio(),
+                    String.valueOf(art.getStock()),
+                    art.getCategoria(),
+                    art.getFechaIngreso().toString()
+                };
+
+                for (String campo : campos) {
+                    com.itextpdf.text.pdf.PdfPCell celdaDato = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Paragraph(campo, fuenteDatos));
+                    celdaDato.setBackgroundColor(colorFila);
+                    celdaDato.setPadding(5);
+                    
+                    if(campo.equals(art.getNombre())) {
+                        celdaDato.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+                    } else {
+                        celdaDato.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+                    }
+                    tablaPdf.addCell(celdaDato);
+                }
+                filaContador++;
+            }
+
+            documento.add(tablaPdf);
+            documento.close();
+            
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Reporte PDF con diseño generado con éxito!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al crear PDF: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnGenerarPDFActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        try {
+            
+            if (txtId.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty() || 
+                txtPrecio.getText().trim().isEmpty() || txtStock.getText().trim().isEmpty() || txtFecha.getText().trim().isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Por favor, llene todos los campos.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            String id = txtId.getText().trim();
+            String nombre = txtNombre.getText().trim();
+            double precio = Double.parseDouble(txtPrecio.getText().trim());
+            int stock = Integer.parseInt(txtStock.getText().trim());
+            String categoria = cboCategoria.getSelectedItem().toString(); 
+            java.time.LocalDate fecha = java.time.LocalDate.parse(txtFecha.getText().trim());
+
+            
+            for (Articulo art : listaArticulos) {
+                if (art.getId().equalsIgnoreCase(id)) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "El ID ya existe.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
+            
+            Articulo nuevo = new Articulo(id, nombre, precio, stock, categoria, fecha);
+            listaArticulos.add(nuevo);
+            
+            ManejadorArchivo.guardarArticulos(listaArticulos);
+            actualizarTablaGrafica();
+            
+            
+            txtId.setText(""); txtNombre.setText(""); txtPrecio.setText(""); txtStock.setText("");
+
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Artículo guardado con éxito!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (java.time.format.DateTimeParseException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Fecha incorrecta. Use: AAAA-MM-DD", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Precio y Stock deben ser números.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        
+        int filaSeleccionada = tablaProductos.getSelectedRow();
+
+        
+        if (filaSeleccionada == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Por favor, seleccione el artículo que desea eliminar en la tabla.", 
+                "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        
+        int respuesta = javax.swing.JOptionPane.showConfirmDialog(this, 
+            "¿Está seguro de que desea eliminar este artículo?", 
+            "Confirmar Eliminación", javax.swing.JOptionPane.YES_NO_OPTION, 
+            javax.swing.JOptionPane.QUESTION_MESSAGE);
+
+        if (respuesta == javax.swing.JOptionPane.YES_OPTION) {
+            try {
+                
+                listaArticulos.remove(filaSeleccionada);
+
+                
+                ManejadorArchivo.guardarArticulos(listaArticulos);
+
+                
+                actualizarTablaGrafica();
+
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Artículo eliminado con éxito.", "Éxito", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (Exception e) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error al eliminar: " + e.getMessage(), "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -244,6 +425,7 @@ private void actualizarTablaGrafica() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGenerarPDF;
     private javax.swing.JComboBox<String> cboCategoria;
     private javax.swing.JLabel jLabel1;
