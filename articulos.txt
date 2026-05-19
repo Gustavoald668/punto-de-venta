@@ -3,4 +3,4 @@
 107,Sabritas Papas,22.0,100,Abarrotes,2026-05-26
 5566789,Paleta Payaso Rikolino,21.0,10,Abarrotes,2026-05-18
 758,Chris,87.0,20,Otros,2026-05-19
-98798789,jhgjh,70.0,10,Abarrotes,2026-05-19
+37336,Gus,67.0,3,Otros,2026-05-19
