@@ -76,6 +76,8 @@ private void actualizarTablaGrafica() {
         tablaProductos = new javax.swing.JTable();
         btnEliminar = new javax.swing.JButton();
         btnImportarCSV = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnGuardarCambios = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,6 +127,12 @@ private void actualizarTablaGrafica() {
         btnImportarCSV.setText("Importar Lote CSV");
         btnImportarCSV.addActionListener(this::btnImportarCSVActionPerformed);
 
+        btnEditar.setText("Editar Articulos");
+        btnEditar.addActionListener(this::btnEditarActionPerformed);
+
+        btnGuardarCambios.setText("Guardar Cambios");
+        btnGuardarCambios.addActionListener(this::btnGuardarCambiosActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -139,7 +147,9 @@ private void actualizarTablaGrafica() {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                        .addComponent(btnEditar))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -157,20 +167,24 @@ private void actualizarTablaGrafica() {
                             .addComponent(jLabel3)
                             .addGap(18, 18, 18)
                             .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnImportarCSV)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnEliminar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnAgregar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnGenerarPDF)
+                            .addGap(28, 28, 28))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(14, 14, 14)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnImportarCSV)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAgregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGenerarPDF)
-                        .addGap(28, 28, 28))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16))))
+                        .addComponent(btnGuardarCambios)
+                        .addGap(230, 230, 230))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,7 +199,8 @@ private void actualizarTablaGrafica() {
                         .addComponent(btnAgregar)
                         .addComponent(btnGenerarPDF)
                         .addComponent(btnEliminar)
-                        .addComponent(btnImportarCSV)))
+                        .addComponent(btnImportarCSV)
+                        .addComponent(btnEditar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -208,8 +223,11 @@ private void actualizarTablaGrafica() {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(170, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnGuardarCambios)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(141, Short.MAX_VALUE))
         );
 
         pack();
@@ -347,7 +365,7 @@ try {
             Articulo nuevo = new Articulo(id, nombre, precio, stock, categoria, fecha);
             listaArticulos.add(nuevo);
             
-            ManejadorArchivo.guardarArticulos(listaArticulos);
+          ManejadorArchivo.guardarArticulos((java.util.ArrayList<Articulo>) listaArticulos);
             actualizarTablaGrafica();
             
             
@@ -388,7 +406,7 @@ try {
                 listaArticulos.remove(filaSeleccionada);
 
                 
-                ManejadorArchivo.guardarArticulos(listaArticulos);
+               ManejadorArchivo.guardarArticulos((java.util.ArrayList<Articulo>) listaArticulos);
 
                 
                 actualizarTablaGrafica();
@@ -406,10 +424,10 @@ try {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnImportarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarCSVActionPerformed
-        
+                                                    
+                                                   
         javax.swing.JFileChooser selector = new javax.swing.JFileChooser();
         selector.setDialogTitle("Seleccionar catálogo CSV de importación");
-        
         
         javax.swing.filechooser.FileNameExtensionFilter filtro = new javax.swing.filechooser.FileNameExtensionFilter("Archivos CSV (*.csv)", "csv");
         selector.setFileFilter(filtro);
@@ -423,7 +441,6 @@ try {
                 int importados = 0;
                 
                 while ((linea = br.readLine()) != null) {
-                    
                     if (linea.trim().isEmpty()) continue;
                     
                     String[] datos = linea.split(",");
@@ -436,7 +453,6 @@ try {
                         String categoria = datos[4].trim();
                         java.time.LocalDate fecha = java.time.LocalDate.parse(datos[5].trim());
 
-                        
                         boolean repetido = false;
                         for (Articulo art : listaArticulos) {
                             if (art.getId().equalsIgnoreCase(id)) {
@@ -453,12 +469,11 @@ try {
                     }
                 }
 
-                
                 if (importados > 0) {
-                    ManejadorArchivo.guardarArticulos(listaArticulos);
+                    ManejadorArchivo.guardarArticulos((java.util.ArrayList<Articulo>) listaArticulos);
                     actualizarTablaGrafica();
                     javax.swing.JOptionPane.showMessageDialog(this, 
-                        "¡Importación exitosa! Se añadieron " + importados + " artículos nuevos.", 
+                        "¡Importación exitosa! Se añadieron " + importados + " artículos nuevos al archivo .txt", 
                         "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     javax.swing.JOptionPane.showMessageDialog(this, 
@@ -471,7 +486,75 @@ try {
                     "Error al leer el CSV: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         }
+    
     }//GEN-LAST:event_btnImportarCSVActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+                                                
+        int filaSeleccionada = tablaProductos.getSelectedRow();
+        
+        if (filaSeleccionada != -1) {
+            Articulo art = listaArticulos.get(filaSeleccionada);
+            
+            txtId.setText(art.getId());
+            txtId.setEnabled(false); // Bloqueamos el ID para que no lo cambien
+            
+            txtNombre.setText(art.getNombre());
+            txtPrecio.setText(String.valueOf(art.getPrecio()));
+            txtStock.setText(String.valueOf(art.getStock()));
+            cboCategoria.setSelectedItem(art.getCategoria());
+            txtFecha.setText(art.getFechaIngreso().toString());
+            
+            javax.swing.JOptionPane.showMessageDialog(this, "Modifica los datos y dale clic a 'Guardar Cambios'.", "Editar", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecciona un producto de la tabla para poder editarlo.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+    
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambiosActionPerformed
+                                                   
+        try {
+            String id = txtId.getText().trim();
+            String nombre = txtNombre.getText().trim();
+            double precio = Double.parseDouble(txtPrecio.getText().trim());
+            int stock = Integer.parseInt(txtStock.getText().trim());
+            String categoria = cboCategoria.getSelectedItem().toString();
+            java.time.LocalDate fecha = java.time.LocalDate.parse(txtFecha.getText().trim());
+
+            if (nombre.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            for (Articulo art : listaArticulos) {
+                if (art.getId().equalsIgnoreCase(id)) {
+                    art.setNombre(nombre);
+                    art.setPrecio(precio);
+                    art.setStock(stock);
+                    art.setCategoria(categoria);
+                    art.setFechaIngreso(fecha);
+                    break;
+                }
+            }
+
+            ManejadorArchivo.guardarArticulos((java.util.ArrayList<Articulo>) listaArticulos);
+            actualizarTablaGrafica(); 
+            
+            txtId.setText("");
+            txtNombre.setText("");
+            txtPrecio.setText("");
+            txtStock.setText("");
+            txtId.setEnabled(true); // Desbloqueamos el ID para el siguiente producto
+
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Cambios guardados con éxito en articulos.txt!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar cambios: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    
+    
+    }//GEN-LAST:event_btnGuardarCambiosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -500,8 +583,10 @@ try {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGenerarPDF;
+    private javax.swing.JButton btnGuardarCambios;
     private javax.swing.JButton btnImportarCSV;
     private javax.swing.JComboBox<String> cboCategoria;
     private javax.swing.JLabel jLabel1;
